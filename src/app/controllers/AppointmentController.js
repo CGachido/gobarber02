@@ -5,7 +5,7 @@ import Appointment from '../models/Appointment';
 import User from '../models/User';
 import File from '../models/File';
 import Notification from '../schemas/Notification';
-import Mail from '../../lib/mail';
+import Mail from '../../lib/Mail';
 
 class AppointmentController {
   async index(req, res) {
@@ -118,7 +118,7 @@ class AppointmentController {
     );
 
     await Notification.create({
-      content: `Novo agendamento de ${user.name}, para ${formattedDate}`,
+      content: `New schedule of ${user.name}, for ${formattedDate}`,
       user: provider_id,
     });
 
@@ -146,10 +146,11 @@ class AppointmentController {
     appointment.canceled_at = new Date();
 
     await appointment.save();
-    await Mail.sendEmail({
-      to: `${appointment.provider.name} > ${appointment.provider.email}>`,
+
+    await Mail.sendMail({
+      to: `${appointment.provider.name} <${appointment.provider.email}>`,
       subject: 'Schedule canceled',
-      text: 'Você tem um novo cancelamento',
+      text: 'You have a new cancellation',
     });
 
     return res.json(appointment);
