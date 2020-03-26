@@ -1,5 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
-import { isBefore, subHours } from 'date-fns';
+import { isBefore, subHours, isAfter } from 'date-fns';
 
 class Appointment extends Model {
   static init(sequelize) {
@@ -16,7 +16,7 @@ class Appointment extends Model {
         cancelable: {
           type: Sequelize.VIRTUAL,
           get() {
-            return isBefore(this.date, subHours(new Date(), 2));
+            return isAfter(this.date, subHours(new Date(), 2));
           },
         },
       },
